@@ -14,6 +14,7 @@ export class AppComponent {
   constructor(
     private http: HttpClient
   ){
+    this.createuser();
     this.allUsers();
   }
 
@@ -33,5 +34,27 @@ export class AppComponent {
 
     this.http.post(this.apiUrl, body)
     .subscribe(res => console.log(res))
+  }
+
+  createuser(): void {
+    const body = {
+      query: `
+      mutation CreateNewUser($name: String!, $email: String!, $password: String!) {
+        createUser(name: $name, email: $email, password: $password){
+          id
+          name
+          email
+        }
+      }
+      `,
+      variables: {
+        name: 'Black Panther', 
+        email: 'panther@avangers.com', 
+        password: '123456'
+      }
+    }
+
+    this.http.post(this.apiUrl, body)
+      .subscribe(res => console.log(res))
   }
 }

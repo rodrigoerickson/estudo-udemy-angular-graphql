@@ -7,7 +7,7 @@ type User @model {
   email: String! @isUnique
   password: String!
   createdAt: DateTime!
-  updateAt: DateTime!
+  updateAt: DateTime
   chat: [Chat!]! @relation(name: "UsersOnChats")
   messages: [Message!]! @relation(name: "MessagesOnUser")
   photo: File @relation(name: "UserPhoto")
