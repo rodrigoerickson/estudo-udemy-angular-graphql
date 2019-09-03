@@ -9,11 +9,10 @@ import gql from 'graphql-tag';
 })
 export class AppComponent {
 
-  private apiUrl = 'https://api.graph.cool/simple/v1/cjzsyt38x0xuy0103ba7jy6qe';
-
   constructor(
     private apollo: Apollo
   ){
+    this.createuser();
     this.allUsers();
   }
 
@@ -34,23 +33,23 @@ export class AppComponent {
   }
 
   createuser(): void {
-    const body = {
-      query: `
-      mutation CreateNewUser($name: String!, $email: String!, $password: String!) {
-        createUser(name: $name, email: $email, password: $password){
-          id
-          name
-          email
+
+    this.apollo.mutate({
+      mutation: gql`
+        mutation CreateNewUser($name: String!, $email: String!, $password: String!) {
+          createUser(name: $name, email: $email, password: $password){
+            id
+            name
+            email
+          }
         }
-      }
       `,
       variables: {
         name: 'Black Panther', 
-        email: 'panther@avangers.com', 
+        email: 'panther2@avangers.com', 
         password: '123456'
       }
-    }
+    }).subscribe(res => console.log(res))
 
-    
   }
 }
