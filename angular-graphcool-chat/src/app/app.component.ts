@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 @Component({
   selector: 'app-root',
@@ -12,16 +12,14 @@ export class AppComponent {
   private apiUrl = 'https://api.graph.cool/simple/v1/cjzsyt38x0xuy0103ba7jy6qe';
 
   constructor(
-    private http: HttpClient
+    private apollo: Apollo
   ){
-    this.createuser();
     this.allUsers();
   }
 
   allUsers():void{
-    const body = {
-      query: 
-      `
+    this.apollo.query({
+      query: gql`
       query {
         allUsers{
           id
@@ -30,10 +28,9 @@ export class AppComponent {
         }
       }
       `
-    }
+    }).subscribe(res => console.log(res))
 
-    this.http.post(this.apiUrl, body)
-    .subscribe(res => console.log(res))
+   
   }
 
   createuser(): void {
@@ -54,7 +51,6 @@ export class AppComponent {
       }
     }
 
-    this.http.post(this.apiUrl, body)
-      .subscribe(res => console.log(res))
+    
   }
 }
