@@ -12,7 +12,7 @@ export class AppComponent {
   constructor(
     private apollo: Apollo
   ){
-    this.createuser();
+    // this.createuser();
     this.allUsers();
   }
 
