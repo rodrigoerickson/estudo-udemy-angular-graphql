@@ -55,10 +55,22 @@ permissions:
 
   - operation: User.read
     authenticated: true
+    query: src/permissions/User.graphql
+
+  - operation: User.read
+    fields: [name, email, createdAt, updateAt, photo]
+    authenticated: true
+
+
   - operation: User.update
+    authenticated: true
+    query: src/permissions/User.graphql
+  - operation: User.update
+    fields: [photo]
     authenticated: true
   - operation: User.delete
     authenticated: true
+    query: src/permissions/User.graphql
 
   #chat
   - operation: Chat.read
@@ -90,7 +102,26 @@ permissions:
   - operation: File.delete
     authenticated: true
 
+  #Relations
+  - operation: UsersOnChats.connect
+    authenticated: true
+  - operation: UsersOnChats.disconnect
+    authenticated: true
+  - operation: MessagesOnChat.connect
+    authenticated: true
+  - operation: MessagesOnUser.connect
+    authenticated: true
+  - operation: UserPhoto.connect
+    authenticated: true
+  - operation: UserPhoto.disconnect
+    authenticated: true
+  - operation: ChatPhoto.connect
+    authenticated: true
+  - operation: ChatPhoto.disconnect
+    authenticated: true
+
   
+
 
 
 # Your root tokens used for functions to get full access to the API
