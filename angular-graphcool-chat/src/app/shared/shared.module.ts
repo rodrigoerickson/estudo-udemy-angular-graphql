@@ -5,6 +5,7 @@ import {
   MatToolbarModule,
   MatFormFieldModule,
   MatInputModule } from '@angular/material'
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   exports:[
@@ -12,7 +13,8 @@ import {
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatToolbarModule
+    MatToolbarModule,
+    ReactiveFormsModule
   ]
 })
 export class SharedModule { }

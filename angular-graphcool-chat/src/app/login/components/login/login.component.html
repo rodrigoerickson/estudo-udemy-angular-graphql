@@ -6,15 +6,15 @@
       </mat-toolbar>
     </mat-card-title>
     <mat-card-content>
-      <form>
+      <form (submit)="onSubmit()" [formGroup]="loginForm">
         <mat-form-field>
-            <input matInput type="email" placeholder="email" />
+            <input matInput type="email" placeholder="email" formControlName="email" />
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="password" placeholder="password" />
+            <input matInput type="password" placeholder="password" formControlName="password" />
         </mat-form-field>
 
-        <button type="submit" mat-button color="primary">
+        <button type="submit" mat-button [disabled]="loginForm.invalid" color="primary">
           Sign In
         </button>
       </form>
