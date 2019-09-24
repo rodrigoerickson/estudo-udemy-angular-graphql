@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { takeWhile } from 'rxjs/operators';
+import { ErrorService } from 'src/app/core/services/error.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm: FormGroup;
   configs = {
@@ -16,10 +18,13 @@ export class LoginComponent implements OnInit {
     buttonActionText: 'Create account'
   };
 
-  nameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
+  private nameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
+
+  private alive = true;
 
   constructor(
     private authService: AuthService,
+    private errorService: ErrorService,
     private formBuilder: FormBuilder
 
   ) { }
@@ -50,9 +55,18 @@ export class LoginComponent implements OnInit {
         ? this.authService.signinUser(this.loginForm.value)
         : this.authService.signupUser(this.loginForm.value)
     
-    operation.subscribe(res => {
+    operation
+    .pipe(
+      takeWhile(() => this.alive)
+    )
+    .subscribe(res => {
       console.log('redirecting...', res);
-    })
+    },
+    err => {
+      console.log(this.errorService.getErrorMessage(err));
+    },
+    () => { console.log('observable completado')}
+    )
   }
 
   changeAction(): void{
@@ -72,5 +86,9 @@ export class LoginComponent implements OnInit {
 
   get name(): FormControl{
     return <FormControl>this.loginForm.get('name')
+  }
+
+  ngOnDestroy () {
+    this.alive = false;
   }
 }

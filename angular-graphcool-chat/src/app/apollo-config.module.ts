@@ -23,7 +23,7 @@ export class ApolloConfigModule {
         const http = httpLink.create({uri});
 
 
-        const linkError = onError(({ graphQLErrors, networkError }) => {
+        const linkError = onError(({response, graphQLErrors, networkError }) => {
             if (graphQLErrors){
                 graphQLErrors.map(({ message, locations, path }) =>
                 console.log(
