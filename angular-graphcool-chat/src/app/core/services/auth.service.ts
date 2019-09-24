@@ -12,10 +12,7 @@ export class AuthService {
 
   constructor(
     private apollo: Apollo
-  ) {
-    this.signupUser({name:"Doctor Strange", email: 'strange@marvel.com', password: '123456'})
-      .subscribe(res => console.log('signupUser', res));
-  }
+  ) { }
 
   signinUser(variables: {email: string, password: string}) {
     return this.apollo.mutate({
