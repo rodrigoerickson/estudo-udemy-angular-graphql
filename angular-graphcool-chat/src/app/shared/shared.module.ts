@@ -4,7 +4,8 @@ import {
   MatCardModule,
   MatToolbarModule,
   MatFormFieldModule,
-  MatInputModule } from '@angular/material'
+  MatInputModule, 
+  MatSnackBarModule} from '@angular/material'
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -13,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSnackBarModule,
     MatToolbarModule,
     ReactiveFormsModule
   ]
