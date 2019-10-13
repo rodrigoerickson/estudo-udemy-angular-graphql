@@ -4,23 +4,25 @@ import { ActivatedRouteSnapshot,
     RouterStateSnapshot, 
     CanActivateChild, 
     CanLoad, 
-    Route
+    Route,
+    Router
 } from '@angular/router';
 import { LoginRoutingModule } from './login-routing.module';
 import { AuthService } from '../core/services/auth.service';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 
 @Injectable(
     {providedIn: LoginRoutingModule}
 )
 export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Observable<boolean> {
-        return this.authService.isAuthenticate;
+        return this.checkAuthStaet();
     }
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
@@ -28,9 +30,20 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     }
 
     canLoad (route: Route): Observable<boolean> {
-        return this.authService.isAuthenticate
+        return this.checkAuthStaet()
             .pipe(
                 take(1)
             );
+    }
+
+    private checkAuthStaet():Observable<boolean>{
+        return this.authService.isAuthenticate
+            .pipe(
+                tap(is => {
+                    if (!is) {
+                        this.router.navigate(['/login']);
+                    }
+                })
+            )
     }
 }
