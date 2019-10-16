@@ -26,6 +26,7 @@
           <mat-error *ngIf="password.hasError('minlength')">Enter at least 5 characters</mat-error>
         </mat-form-field>
 
+        <mat-slide-toggle [checked]="authService.keepSigned" (change)="onKeepSigned()">Keep me signed in</mat-slide-toggle>
 
         <button type="submit" mat-button [disabled]="loginForm.invalid" color="primary">
           {{configs.actionText}}
