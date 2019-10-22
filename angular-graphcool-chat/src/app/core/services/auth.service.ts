@@ -3,7 +3,7 @@ import { Observable, ReplaySubject, throwError } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 
-import { AUTHENTICATE_USER_MUTATION, SIGNUP_USER_MUTATION } from './auth.graphql';
+import { AUTHENTICATE_USER_MUTATION, SIGNUP_USER_MUTATION, LoggedInUserQuery, LOGGED_IN_USER_QUERY } from './auth.graphql';
 import { subscribe } from 'graphql';
 import { StorageKeys } from 'src/app/storag-keys';
 
@@ -22,6 +22,15 @@ export class AuthService {
   {
     this.isAuthenticate.subscribe(is => console.log('authstate', is));
     this.init();
+    this.validateToken()
+        .subscribe(
+            res => {
+                console.log('Res:' ,res);
+            },
+            error => {
+                console.log('error:' ,error);
+            }
+        )
   }
 
   init(): void {
@@ -67,6 +76,20 @@ export class AuthService {
   toggleKeepSigned(): void {
     this.keepSigned = !this.keepSigned;
     window.localStorage.setItem(StorageKeys.KEEP_SIGNED, this.keepSigned.toString());
+  }
+
+  private validateToken(): Observable<{id:string, isAuthenticate: boolean}>{
+    return this.apollo.query<LoggedInUserQuery>({
+        query: LOGGED_IN_USER_QUERY
+    }).pipe(
+        map(res => {
+            const user = res.data.loggedInUser;
+            return {
+                id: (user && user.id), 
+                isAuthenticate: user !== null
+            }
+        })
+    );
   }
 
   private setAuthState(authData: {token:string, isAuthenticate: boolean}): void {

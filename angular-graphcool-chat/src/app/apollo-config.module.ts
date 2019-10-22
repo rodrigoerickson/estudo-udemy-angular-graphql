@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { ApolloModule, Apollo } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
-import { ApolloLink } from 'apollo-link';
+import { ApolloLink, Operation } from 'apollo-link';
+import { StorageKeys } from './storag-keys';
 
 @NgModule({
     imports:[
@@ -22,6 +23,14 @@ export class ApolloConfigModule {
         const uri = 'https://api.graph.cool/simple/v1/cjzsyt38x0xuy0103ba7jy6qe';
         const http = httpLink.create({uri});
 
+        const authMiddleware: ApolloLink = new ApolloLink((operation: Operation, forwad) =>{
+            operation.setContext({
+                headers: new HttpHeaders({
+                    'Authorization': `Bearer ${this.getAuthToken()}`
+                })
+            })
+            return forwad(operation);
+        });
 
         const linkError = onError(({response, graphQLErrors, networkError }) => {
             if (graphQLErrors){
@@ -39,9 +48,13 @@ export class ApolloConfigModule {
         apollo.create({
             link: ApolloLink.from([
                 linkError,
-                http
+                authMiddleware.concat(http),
             ]),
             cache: new InMemoryCache()
         })
+    }
+
+    private getAuthToken():string{
+        return window.localStorage.getItem(StorageKeys.AUTH_TOKEN);
     }
 }
