@@ -27,6 +27,7 @@
         </mat-form-field>
 
         <mat-slide-toggle [checked]="authService.keepSigned" (change)="onKeepSigned()">Keep me signed in</mat-slide-toggle>
+        <mat-slide-toggle [checked]="authService.rememberMe" (change)="onRememberMe()">RememberMe</mat-slide-toggle>
 
         <button type="submit" mat-button [disabled]="loginForm.invalid" color="primary">
           {{configs.actionText}}
