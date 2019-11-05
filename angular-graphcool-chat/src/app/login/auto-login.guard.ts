@@ -17,11 +17,10 @@ export class AutoLoginGuard implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean> {
-        // return this.authService.isAuthenticate
-        //     .pipe(
-        //         tap(is => (is)? this.router.navigate(['/dashboard']):null),
-        //         map(is => !is)
-        //     );
-        return of(true);
+        return this.authService.isAuthenticate
+            .pipe(
+                tap(is => (is)? this.router.navigate(['/dashboard']):null),
+                map(is => !is)
+            );
     }
 }
