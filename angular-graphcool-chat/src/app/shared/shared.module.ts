@@ -11,12 +11,14 @@ import {
   MatListModule,
   MatIconModule,
   MatLineModule,
-  MatSidenavModule} from '@angular/material'
+  MatSidenavModule,
+  MatButtonModule} from '@angular/material'
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   exports:[
     CommonModule,
+    MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
     MatIconModule,

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
 import { AuthGuard } from '../login/auth.guard';
+import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
 
 const routes: Routes = [
     { path:'', component: DashboardHomeComponent, canActivate:[AuthGuard] }

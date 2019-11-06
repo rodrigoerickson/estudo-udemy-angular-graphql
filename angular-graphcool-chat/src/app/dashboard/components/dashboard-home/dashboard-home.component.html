@@ -1,12 +1,18 @@
-<!-- 
+<mat-sidenav-container class="sidenav-container">
 
-<app-dashboard-resources></app-dashboard-resources> -->
-
-<mat-sidenav-container class="sidenav-containter">
     <mat-sidenav #sidenav class="sidenav">
-
+  
+      <mat-toolbar color="primary" class="mat-elevation-z2">
+        Menu
+      </mat-toolbar>
+  
+      <app-dashboard-resources></app-dashboard-resources>
+  
     </mat-sidenav>
+  
     <mat-sidenav-content>
-        <app-dashboard-header [sidenav]="sidenav"></app-dashboard-header>
+      <app-dashboard-header [sidenav]="sidenav"></app-dashboard-header>
     </mat-sidenav-content>
-</mat-sidenav-container> 
+  
+  </mat-sidenav-container>
+  
